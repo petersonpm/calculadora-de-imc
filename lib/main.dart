@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false, // tira a marca dgua debug
     home: Home(), // tela principal, o home espera um widget e o widget espera um StatefulWidget que será a nossa tela
   ));
 }
@@ -73,12 +74,12 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           // "actions" refere-se a um conjunto de elementos interativos que podem ser exibidos na AppBar.
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: _resetFields, // onPressed esta chamando a funçao de limpar
           ), // Ícone de atualizar.
         ],
       ),
-      backgroundColor: Colors.grey[300], // Cor de fundo do meu Scaffold.
+      backgroundColor: Colors.white, // Cor de fundo do meu Scaffold.
       body: SingleChildScrollView( // SingleChildScrollView é um widget que permite rolar seu conteúdo verticalmente quando o espaço disponível é menor do que o necessário para exibir todo o conteúdo.
         padding:  const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0), // espaçamento da
         //Formwidget para gerenciar um grupo de formulário
@@ -91,7 +92,7 @@ class _HomeState extends State<Home> {
             children: [
               // children é usada para adicionar vários widgets como filhos de um widget pai e permite criar layouts mais complexos combinando diferentes widgets.
 
-              Icon(Icons.account_circle, size: 120.0, color: Colors.green), // Ícone, tamanho, cor.
+              const Icon(Icons.account_circle, size: 120.0, color: Colors.green), // Ícone, tamanho, cor.
               // TextField é um widget do Flutter que permite a entrada de texto por parte do usuário.
               TextFormField(
                 keyboardType: TextInputType.number,
@@ -155,7 +156,16 @@ class _HomeState extends State<Home> {
               ),
               Text( _infoText, //texto da informaçao
                 textAlign: TextAlign.center, // alinhar o texto
-                style: TextStyle(color: Colors.green, fontSize: 25.0), //
+                style: const TextStyle(color: Colors.green, fontSize: 25.0), //
+              ),
+              const SizedBox(height: 200.0),
+              const Text('Desenvolvedor:',
+              textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54, fontSize: 18.0, fontWeight: FontWeight.bold,),
+              ),
+              const Text('- Peterson Macedo -',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54, fontSize: 18.0),
               ),
             ],
           ),
