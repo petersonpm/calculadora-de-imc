@@ -1,125 +1,166 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    home: Home(), // tela principal, o home espera um widget e o widget espera um StatefulWidget que será a nossa tela
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'ola mundo'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class Home extends StatefulWidget {
+  // Um StatefulWidget é usado quando você precisa de um widget que possa ser atualizado e reagir a mudanças de estado.
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
+
 }
+//_HomeState é responsável por atualizar o estado do widget Home e redessinhar a interface do usuário sempre que necessário.
+class _HomeState extends State<Home> {
+  //TextEditingController é uma classe fornecida pelo Flutter que permite controlar e interagir com um campo de texto
+  TextEditingController weightController = TextEditingController(); // declarando weightController peso
+  TextEditingController heightController = TextEditingController(); // declarando weightController altura
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // chave global para ser ultilizada no formulario
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void _incrementCounter() {
+  // variael para colocar no lugar no text
+  String _infoText = "Informe seus dados!";
+
+  // a função _resetFieldsmétodo limparar o texto nos campos weightController e heightController e em seguida chamar a variavel _inforText.
+  void  _resetFields(){
+    weightController.text = "";
+    heightController.text = "";
+    // precisar usar o setSatate para redesenhar a tela
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _infoText = "Informe seus dados!";
+      _formKey = GlobalKey<FormState>();
+    });
+  }
+  // função para calcular o imc
+  void _calculate(){
+    // setState printar na tela
+    setState(() {
+      double weight = double.parse(weightController.text); // weight vai pegar os numeros (peso) no campo de text
+      double height = double.parse(heightController.text) / 100; // height vai pegar os numeros (altura) no campo de text
+      double imc = weight / (height * height);
+      print(imc);
+      if(imc < 18.6){
+        _infoText = "Abaixo do peso! (${imc.toStringAsPrecision(3)})";
+      }else if(imc >= 18.6 && imc < 24.9){
+        _infoText = "Peso ideal! (${imc.toStringAsPrecision(3)})";
+      }else if(imc >= 24.9 && imc < 29.9){
+        _infoText = "Levemente Acima do peso! (${imc.toStringAsPrecision(3)})";
+      }else if(imc >= 29.9 && imc < 34.9){
+      _infoText = "Obesidade Grau I! (${imc.toStringAsPrecision(3)})";
+      }else if(imc >= 34.9 && imc < 39.9){
+      _infoText = "Obesidade Grau II! (${imc.toStringAsPrecision(3)})";
+      }else if(imc >= 40) {
+        _infoText = "Obesidade Grau III! (${imc.toStringAsPrecision(3)})";
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+
+      // Widget que fornece uma estrutura básica para construir interfaces de usuário.
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        // Widget que representa a barra de aplicativo na parte superior de uma tela.
+        title: const Text("Calculadora de IMC"),
+        centerTitle: true, // Centralizar título (title).
+        backgroundColor: Colors.green,
+        actions: <Widget>[
+          // "actions" refere-se a um conjunto de elementos interativos que podem ser exibidos na AppBar.
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _resetFields, // onPressed esta chamando a funçao de limpar
+          ), // Ícone de atualizar.
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      backgroundColor: Colors.grey[300], // Cor de fundo do meu Scaffold.
+      body: SingleChildScrollView( // SingleChildScrollView é um widget que permite rolar seu conteúdo verticalmente quando o espaço disponível é menor do que o necessário para exibir todo o conteúdo.
+        padding:  const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0), // espaçamento da
+        //Formwidget para gerenciar um grupo de formulário
+        child: Form(
+            // Column é um widget que organiza os seus filhos em uma única coluna vertical.
+          key: _formKey, // chamando a chave global la em cima
+            child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment Estica os widgets filhos para preencher todo o espaço disponível ao longo do eixo transversal.
+            children: [
+              // children é usada para adicionar vários widgets como filhos de um widget pai e permite criar layouts mais complexos combinando diferentes widgets.
+
+              Icon(Icons.account_circle, size: 120.0, color: Colors.green), // Ícone, tamanho, cor.
+              // TextField é um widget do Flutter que permite a entrada de texto por parte do usuário.
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  // Decorar o TextField.
+                  labelText: "Peso (kg)",
+                  labelStyle: TextStyle(color: Colors.green),
+                ),
+                // textAlign Centraliza o que tem dentro do TextField.
+                textAlign: TextAlign.center,
+                // style Estilizar o que tem dentro do TextField.
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontSize: 25.0,
+                ),
+                controller: weightController,
+                validator: (value) {
+                  if(value!.isEmpty){ // se o valor estiver vazio ele  "Insira seu Peso!"
+                    return "Insira seu Peso!";
+                  }
+                },
+              ),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                // TextField é um widget do Flutter que permite a entrada de texto por parte do usuário.
+                decoration: const InputDecoration(
+                  // Decorar o TextField.
+                  labelText: "Altura (cm)",
+                  labelStyle: TextStyle(color: Colors.green),
+                ),
+                textAlign: TextAlign.center,
+                // Centralizar o que tem dentro do TextField.
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontSize: 25.0,
+                ), // Estilizar o que tem dentro do TextField.
+                controller: heightController,
+                validator: (value) {
+                  if(value!.isEmpty){ // se o valor estiver vazio ele  "Insira sua Altura!"
+                    return "Insira sua Altura!";
+                  }
+                },
+              ),
+              Padding( // coloquei o botao dentro do padding para dar o espaçamento encima e embaixo
+                padding: const EdgeInsets.only(top:20.0 , bottom:20.0 ,), //espaçamento
+                child: Container( // container dentro do ElevatedButton
+                  height: 50.0, // preenchimento do botao
+                  child: ElevatedButton( //botao calcular
+                    onPressed: (){
+                      // esse if verifica se meu formulario esta valido
+                      if(_formKey.currentState!.validate()){
+                        _calculate();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom( //estilo do botao
+                      primary: Colors.green,// Definindo a cor de fundo do botão.
+                    ),
+                    child: const Text('Calcular', style: TextStyle(fontSize: 20.0)), // o texto do botao esta dentro de um chid (filho)
+                  ),
+                ),
+              ),
+              Text( _infoText, //texto da informaçao
+                textAlign: TextAlign.center, // alinhar o texto
+                style: TextStyle(color: Colors.green, fontSize: 25.0), //
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )
     );
   }
 }
