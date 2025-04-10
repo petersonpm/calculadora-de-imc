@@ -1,16 +1,10 @@
-# imc
+IMC
+Bem-vindo ao projeto IMC!
+Este é o ponto de partida para um aplicativo Flutter incrível.
 
-A new Flutter project.
+🚀 Começando
+Se este é o seu primeiro projeto Flutter, você está no lugar certo! Aqui vão alguns recursos para te ajudar a decolar:
 
-## Getting Started
+📚 Lab: Crie seu primeiro app Flutter
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🍳 Cookbook: Exemplos úteis de Flutter
